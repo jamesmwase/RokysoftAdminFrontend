@@ -1,0 +1,22 @@
+/* @tailwind base;
+@tailwind components;
+@tailwind utilities; */
+
+.MuiTableCell-root {
+  z-index: 1 !important;
+}
+.MuiTableCell-head div {
+    font-weight: bolder !important;
+}
+.MuiSvgIcon-root {
+    color: #8d8d8d !important;
+}
+.MuiInput-input:focus {
+    border-color: #8d8d8d !important;
+    /* outline: none; */
+    box-shadow: 0px 0px 7px #8d8d8d !important;
+    /* border-color: #8d8d8d !important; */
+    border: 1px solid #8d8d8d !important;
+    border-radius: 5px;
+    height: 20px;
+}
