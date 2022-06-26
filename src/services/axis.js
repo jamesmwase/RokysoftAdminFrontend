@@ -1,5 +1,5 @@
 import axios from 'axios';
-import ErrorDialog from '../components/dialogs/error-dialog';
+// import ErrorDialog from '../components/dialogs/error-dialog';
 import consolog from '../functions/consolog';
 import log from '../functions/log';
 import apiParams from '../functions/security/secure-params';
@@ -39,7 +39,7 @@ export default async function axis(params) {
   }
 
   if (!res || res.status === 500) {
-    ErrorDialog('Error(s) Occured: Please try again later.');
+    // ErrorDialog('Error(s) Occured: Please try again later.');
     return;
   }
   if (res) {
@@ -54,7 +54,7 @@ export default async function axis(params) {
           log(errorMsgs);
           if (i === errors.length - 1) {
             res.errors = errorMsgs;
-            return ErrorDialog(errorMsgs);
+            // return ErrorDialog(errorMsgs);
             // return res;
           }
         }

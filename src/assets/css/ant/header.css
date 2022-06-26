@@ -1,0 +1,16 @@
+.ant-layout-header {
+    background-color: #fff !important;
+}
+
+.ant-menu {
+    background-color: #fff !important;
+}
+
+.ant-menu-title-content {
+    color: #444;
+}
+
+.ant-menu-overflow-item:hover, .ant-menu-overflow-item span:hover {
+    background: lightgray !important;
+    transition: 0s !important;
+}

@@ -1,0 +1,14 @@
+.align-middle,
+.MuiPaper-root,
+.max-w-3xl {
+  width: 100%;
+  margin-bottom: 2rem;
+}
+
+.tss-1cdcmys-MUIDataTable-responsiveBase {
+  height: 500px !important;
+}
+
+th div {
+  text-transform: uppercase !important;
+}

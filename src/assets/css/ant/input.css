@@ -1,0 +1,11 @@
+.ant-input,
+.ant-picker,
+.ant-select-selector {
+  border-radius: 10px !important;
+  /* border-block: limegreen; */
+}
+.ant-input:focus,
+.ant-picker:focus,
+.ant-select-selector:focus {
+  box-shadow: inset 0 0 1px 1px limegreen !important;
+}

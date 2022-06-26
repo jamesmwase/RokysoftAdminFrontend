@@ -1,8 +1,11 @@
 import React from "react";
-import { Button, Modal } from "antd";
+import { Button, Modal, Typography } from "antd";
 import "../assets/css/overlay.css";
+// import Modal from 'react-modal';
+import { CloseOutlined } from "@mui/icons-material";
+const { Title } = Typography;
 
-export default class ModalBox extends React.Component {
+export default class ConfirmDeleteModal extends React.Component {
   constructor(props) {
     super(props);
 
@@ -53,19 +56,16 @@ export default class ModalBox extends React.Component {
 
     return (
       <div>
-        {this.props.buttonText !== "" && (
-          <Button block onClick={this.openModal.bind(this)} type="outlined">
+        {this.props.buttonText !== "" && this.props.buttonText && (
+          <button
+            className="inline-block px-6 py-2.5 bg-green-600 text-white font-medium text-xs leading-tight rounded shadow-md hover:bg-green-700 hover:shadow-lg focus:bg-green-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-800 active:shadow-lg transition duration-100 ease-in-out capitalize"
+            onClick={this.openModal.bind(this)}
+          >
             {this.props.buttonText}
-          </Button>
+          </button>
         )}
         <Modal
-          width={
-            this.props.fullScreen === true
-              ? window.innerWidth
-              : window.innerWidth <= 600
-              ? window.innerWidth
-              : "600px"
-          }
+          width={window.innerWidth <= 600 ? window.innerWidth : "600px"}
           height={500}
           closeIcon={
             <span
@@ -78,11 +78,21 @@ export default class ModalBox extends React.Component {
           visible={this.state.isVisible}
           onOk={this.handleOk}
           onCancel={this.handleCancel}
-          footer={[]}
+          footer={[
+            <Button
+              danger
+                style={{ backgroundColor: "red", color: '#fff'}}
+              onClick={this.handleOk.bind(this)}
+            >
+              Delete
+            </Button>,
+            <Button onClick={this.handleCancel.bind(this)}>Cancel</Button>,
+          ]}
         >
           <br />
-          <br />
-          {content}
+          <Title style={{ textAlign: "center" }} level={3}>
+            Are you sure you want to delete?
+          </Title>
         </Modal>
       </div>
     );

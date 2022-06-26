@@ -1,0 +1,15 @@
+.ant-modal {
+    margin-top: -3rem !important;
+}
+.ant-modal-content,
+.ant-modal-header {
+  border-radius: 20px !important;
+}
+.ant-modal-title {
+  font-weight: bold !important;
+  text-align: center;
+}
+
+.ant-modal-wrap {
+  background-color: rgba(226, 90, 90, 0.5);
+}
