@@ -61,7 +61,7 @@ export default async function axis(params) {
       } else {
         log('server response:', res.data);
         if (typeof res.data === 'string') return;
-        return res.data;
+        return res.data.result;
       }
     }
   }

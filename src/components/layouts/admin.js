@@ -50,18 +50,31 @@ let navList = [
     current: false,
   },
   {
-    key: 4,
-    label: <a href="/medications">Medications</a>,
-    href: "/medications",
+    key: 3,
+    label: <a href="/blog">Blog</a>,
+    href: "/blog",
     icon: (
-      <img
-        className="text-gray-400 group-hover:text-gray-500 flex-shrink-0 -ml-1 mr-3 h-6 w-6"
-        style={{ height: "18px", width: "18px" }}
-        src={MedicationIcon}
+      <span
+        className="far fa-edit text-gray-400 group-hover:text-gray-500 flex-shrink-0 -ml-1 mr-3 h-6 w-6"
+        style={{ height: "20px", width: "20px" }}
+        src={PatientIcon}
       />
     ),
     current: false,
   },
+  // {
+  //   key: 4,
+  //   label: <a href="/medications">Medications</a>,
+  //   href: "/medications",
+  //   icon: (
+  //     <img
+  //       className="text-gray-400 group-hover:text-gray-500 flex-shrink-0 -ml-1 mr-3 h-6 w-6"
+  //       style={{ height: "18px", width: "18px" }}
+  //       src={MedicationIcon}
+  //     />
+  //   ),
+  //   current: false,
+  // },
   {
     key: 5,
     label: <hr />,

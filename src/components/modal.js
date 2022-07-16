@@ -52,9 +52,15 @@ export default class ModalBox extends React.Component {
     };
 
     return (
-      <div>
-        {this.props.buttonText !== "" && (
-          <Button block onClick={this.openModal.bind(this)} type="outlined">
+      <span>
+        {this.props.buttonIcon && (
+          <button onClick={this.openModal.bind(this)}
+            type="button"
+            className="text-orange-600 hover:text-orange-900"
+          >{this.props.buttonIcon}</button>
+        )}
+        {this.props.buttonText && (
+          <Button onClick={this.openModal.bind(this)} type="outlined">
             {this.props.buttonText}
           </Button>
         )}
@@ -84,7 +90,7 @@ export default class ModalBox extends React.Component {
           <br />
           {content}
         </Modal>
-      </div>
+      </span>
     );
   }
 }

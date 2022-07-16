@@ -1,5 +1,4 @@
 import React from "react";
-
 import Swal from "sweetalert2";
 import { Dots } from "react-activity";
 import Overlay from "../components/widgets/overlay";
@@ -8,21 +7,21 @@ import MUIDataTable from "mui-datatables";
 import { PencilIcon, TrashIcon } from "@heroicons/react/outline";
 import Breadcrumbs from "../components/widgets/breadcrumbs/admin.breadcrumb";
 import ModalBox from "../components/modal";
-import CreatePortfolioForm from "../components/pages/portfolio/add";
+import CreateBlogForm from "../components/pages/blog/add";
 import ConfirmDeleteModal from "../components/confirm-delete-modal";
 import AdminLayout from "../components/layouts/admin";
-import RokysoftBackend from "../services/api/rokysoft-backend";
 import axis from "../services/axis";
+import RokysoftBackend from "../services/api/rokysoft-backend";
 import log from "../functions/log";
 
 const userStore = new useUserStore();
 
-export default class PortfolioPage extends React.Component {
+export default class BlogPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      portfolios: [],
       Modal: <span />,
+      blogs: [],
       modalBoxTitle: "",
       breadcrumbPages: [
         {
@@ -57,7 +56,7 @@ export default class PortfolioPage extends React.Component {
       Modal: (
         <ConfirmDeleteModal
           resetModal={this.resetModal.bind(this)}
-          title="Delete Portfolio? Can't be undone!"
+          title="Delete Blog? Can't be undone!"
           isVisible={true}
         />
       ),
@@ -67,8 +66,7 @@ export default class PortfolioPage extends React.Component {
   componentDidMount() {
     let dis = this;
     //DATA
-    // this.getUsers();
-    this.readPortfolios();
+    this.readBlogs();
     //TABLE
     this.options = {
       selectableRows: "none",
@@ -90,16 +88,16 @@ export default class PortfolioPage extends React.Component {
         },
       },
       {
-        name: "name",
-        label: "Name",
+        name: "title",
+        label: "Title",
         options: {
           filter: true,
           sort: true,
         },
       },
       {
-        name: "description",
-        label: "Description",
+        name: "intro",
+        label: "Introdunction",
         options: {
           filter: true,
           sort: false,
@@ -114,23 +112,23 @@ export default class PortfolioPage extends React.Component {
         },
       },
       {
-        name: "startedOn",
-        label: "Started On",
+        name: "blog",
+        label: "Blog",
         options: {
           filter: true,
           sort: false,
           display: true,
         },
       },
-      {
-        name: "completedOn",
-        label: "Completed On",
-        options: {
-          filter: true,
-          sort: false,
-          display: true,
-        },
-      },
+      // {
+      //   name: "completedOn",
+      //   label: "Completed On",
+      //   options: {
+      //     filter: true,
+      //     sort: false,
+      //     display: true,
+      //   },
+      // },
       {
         name: "status",
         label: "Status",
@@ -147,26 +145,21 @@ export default class PortfolioPage extends React.Component {
           filter: false,
           download: false,
           customBodyRender: (value, tableMeta, updateValue) => {
-            let tableMeta2 = {
-              id: tableMeta.tableData[tableMeta.rowIndex].id,
-              name: tableMeta.tableData[tableMeta.rowIndex].name,
-              description: tableMeta.tableData[tableMeta.rowIndex].description,
-              coverImg: tableMeta.tableData[tableMeta.rowIndex].coverImg,
-              // startedOn: tableMeta.tableData[tableMeta.rowIndex].startedOn,
-              // completedOn: tableMeta.tableData[tableMeta.rowIndex].completedOn,
-              category: tableMeta.tableData[tableMeta.rowIndex].category,
-              status: tableMeta.tableData[tableMeta.rowIndex].status,
-            };
             return (
               <>
                 <span className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+                  {/* <button */}
                   <ModalBox
                     resetModal={this.resetModal.bind(this)}
                     fullScreen={true}
-                    title="New Portfolio"
+                    title="New Blog"
                     buttonIcon={<PencilIcon className="h-5 w-5 mr-4" />}
-                    content={<CreatePortfolioForm edit={tableMeta2} />}
+                    content={<CreateBlogForm edit={tableMeta} />}
                   />
+                  {/* type="button"
+                      className="text-orange-600 hover:text-orange-900" */}
+                  {/* >
+                    </button> */}
                   <button
                     type="button"
                     onClick={this.deleteRecord.bind(this, tableMeta)}
@@ -182,20 +175,6 @@ export default class PortfolioPage extends React.Component {
       },
     ];
   }
-
-  readPortfolios = async () => {
-    // this.setState({ loader: true });
-    let params = {
-      apiLink: RokysoftBackend.portfolio.read,
-      httpMethod: "get",
-    };
-
-    let portfolios = await axis(params);
-
-    log("portfolios:", portfolios);
-
-    this.setState({ portfolios: portfolios });
-  };
 
   removeUser = (id) => {
     Swal.fire({
@@ -227,7 +206,7 @@ export default class PortfolioPage extends React.Component {
             });
           })
           .finally(() => {
-            this.getUsers();
+            this.readBlogs();
             this.setState({ loader: false });
           });
       } else if (result.isDenied) {
@@ -235,27 +214,17 @@ export default class PortfolioPage extends React.Component {
     });
   };
 
-  getUsers = () => {
-    this.setState({ loader: true });
-    userStore
-      .get()
-      .then((response) => {
-        let data = [];
-        if (typeof response != "undefined") {
-          this.setState({ data: response });
-        }
-      })
-      .catch((error) => {
-        Swal.fire({
-          title: "Failed",
-          text: "failed to get users error (" + error + ")",
-          icon: "error",
-          confirmButtonText: "Ok",
-        });
-      })
-      .finally(() => {
-        this.setState({ loader: false });
-      });
+  readBlogs = async () => {
+    // this.setState({ loader: true });
+    let params = {
+      apiLink: RokysoftBackend.blog.read,
+      httpMethod: "get",
+    };
+    let blogs = await axis(params);
+
+    log("blogs:", blogs);
+
+    this.setState({ blogs: blogs });
   };
 
   render() {
@@ -283,21 +252,23 @@ export default class PortfolioPage extends React.Component {
                 text-gray-900
                 sm:text-2xl sm:truncate"
                   >
-                    Portfolio
+                    Blog
                   </h2>
                 </div>
                 <div className="mt-4 flex-shrink-0 flex md:mt-0 md:ml-4">
                   <ModalBox
-                    title="New Portfolio"
-                    buttonText={"New Portfolio"}
-                    content={<CreatePortfolioForm />}
+                    resetModal={this.resetModal.bind(this)}
+                    fullScreen={true}
+                    title="New Blog"
+                    buttonText={"New Blog"}
+                    content={<CreateBlogForm />}
                   />
                 </div>
               </div>
               <div className="align-middle inline-block min-w-full  mt-5">
                 <MUIDataTable
                   className=""
-                  data={this.state.portfolios}
+                  data={this.state.blogs}
                   columns={this.columns}
                   options={this.options}
                 />

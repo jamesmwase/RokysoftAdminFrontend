@@ -5,18 +5,19 @@ import React from "react";
 import fileToBase64 from "../../../functions/file/file-to-base64";
 import urlToBase64 from "../../../functions/file/url-to-base64";
 import log from "../../../functions/log";
+import generateUrl from "../../../functions/seo/generate-url";
 import RokysoftBackend from "../../../services/api/rokysoft-backend";
 import axis from "../../../services/axis";
 const { Option } = Select;
 // import { Formik, Form, Field, ErrorMessage } from "formik";
 const { TextArea } = Input;
 
-export default class CreatePortfolioForm extends React.Component {
+export default class CreateBlogForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      // edit: {},
-      coverImg: '',
+      edit: {},
+      coverImg: "",
       open: false,
       roles: [
         { name: "Admin", id: "ADMIN1" },
@@ -26,35 +27,59 @@ export default class CreatePortfolioForm extends React.Component {
     };
   }
 
-  componentDidMount () {
-    log('edit:', this.props.edit[this.props.edit.rowIndex]);
+  componentDidMount() {
+    log("row data:", this.props.edit.tableData[this.props.edit.rowIndex]);
+    // qleditor = t;
+    this.setState({ edit: this.props.edit });
 
-    this.setState({edit: this.props.edit});
+    log("values:", this.props.edit);
+
+    var editor = new window.Quill("#editor", {
+      modules: {
+        toolbar: [
+          [{ header: [1, 2, 3, false] }],
+          ["bold", "italic", "underline"],
+          ["code-block"],
+        ],
+      },
+      theme: "snow",
+    });
+    setTimeout(() => {
+      document.getElementsByClassName("ql-editor")[0].innerHTML =
+        this.props.edit.tableData[this.props.edit.rowIndex].blog;
+    }, 3000);
   }
 
   async onChange(value) {
-    log('cover:', value);
+    log("cover:", value);
     let file = value.file;
     // var reader = new FileReader();
     // var url = reader.readAsDataURL(file);
     let url = URL.createObjectURL(file);
-    log('url:', url);
+    log("url:", url);
     let coverImg = await urlToBase64(url);
-    log('avatar:', coverImg);
+    log("avatar:", coverImg);
 
-    this.setState({coverImg: coverImg, file: file});
-}
+    this.setState({ coverImg: coverImg, file: file });
+  }
 
   onFinish = async (values) => {
     console.log(values);
-    if (this.props.edit) {
-      values.id = this.props.edit.id;
-    }
-    values.apiLink = RokysoftBackend.portfolio.add;
+    let editor = document.getElementsByClassName("ql-editor")[0].innerHTML;
+    console.log("editor:", editor);
+
+    // let params = {
+    //     apiLink: RokysoftBackend.blog.add,
+    //     httpMethod: 'post'
+    // }
+
+    values.apiLink = RokysoftBackend.blog.add;
     values.httpMethod = "post";
-    values.startedOn = moment(values.startedOn._d).format("YYYY-MM-DD");
-    values.completedOn = moment(values.completedOn._d).format("YYYY-MM-DD");
+    // values.startedOn = moment(values.startedOn._d).format("YYYY-MM-DD");
+    // values.completedOn = moment(values.completedOn._d).format("YYYY-MM-DD");
     values.coverImg = this.state.coverImg;
+    values.blog = editor;
+    values.url = await generateUrl(values.title);
     await axis(values);
   };
 
@@ -83,17 +108,16 @@ export default class CreatePortfolioForm extends React.Component {
       },
     };
 
-        const props = {
-         
-            beforeUpload: file => {
-            if(file.type.contains('image/')) {
-              this.setState({
-                file: file,
-              });
-            }
-            log('Cover:', this.state.file);
-          },
-          };
+    const props = {
+      beforeUpload: (file) => {
+        if (file.type.contains("image/")) {
+          this.setState({
+            file: file,
+          });
+        }
+        log("Cover:", this.state.file);
+      },
+    };
 
     return (
       <>
@@ -103,11 +127,11 @@ export default class CreatePortfolioForm extends React.Component {
             name="nest-messages"
             onFinish={this.onFinish}
             validateMessages={validateMessages}
-            initialValues={this.props.edit}
+            initialValues={this.props.edit.tableData[this.props.edit.rowIndex]}
           >
             <Form.Item
-              name="name"
-              label="Name"
+              name="title"
+              label="Title"
               rules={[
                 {
                   required: true,
@@ -117,15 +141,19 @@ export default class CreatePortfolioForm extends React.Component {
               <Input />
             </Form.Item>
             <Form.Item
-              name="description"
-              label="Description"
+              name="intro"
+              label="Introduction"
               rules={[
                 {
                   type: "text",
                 },
               ]}
             >
-              <TextArea maxLength={150} placeholder="Write about the project" />
+              <TextArea
+                showCount={300}
+                maxLength={300}
+                placeholder="Write about the project"
+              />
             </Form.Item>
             <Form.Item name="coverImg" label="Cover Pic">
               <Upload
@@ -134,14 +162,8 @@ export default class CreatePortfolioForm extends React.Component {
                 beforeUpload={props.beforeUpload}
                 onChange={this.onChange.bind(this)}
               >
-                <Button icon={<PictureOutlined />}>Choose Cover Pic</Button>
+                <Button icon={<PictureOutlined />}>Cover Photo</Button>
               </Upload>
-            </Form.Item>
-            <Form.Item name="startedOn" label="Started on">
-              <DatePicker onChange={this.onChangeDob} />
-            </Form.Item>
-            <Form.Item name="completedOn" label="Completed on">
-              <DatePicker onChange={this.onChangeDob} />
             </Form.Item>
 
             <Form.Item
@@ -154,9 +176,13 @@ export default class CreatePortfolioForm extends React.Component {
                 allowClear
                 rules={[{ required: true }]}
               >
-                <Option value="mobile">Mobile</Option>
-                <Option value="web">Web</Option>
-                <Option value="desktop">Desktop</Option>
+                <Option value="programming">Programming</Option>
+                <Option value="movies">Movies</Option>
+                <Option value="tv shows">TV Shows</Option>
+                <Option value="software">Software</Option>
+                <Option value="windows">Windows</Option>
+                <Option value="linux">Linux</Option>
+                <Option value="linux">Other</Option>
               </Select>
             </Form.Item>
 
@@ -166,7 +192,7 @@ export default class CreatePortfolioForm extends React.Component {
               rules={[{ required: true }]}
             >
               <Select
-                placeholder="Select portfolio status"
+                placeholder="Select blog status"
                 allowClear
                 rules={[{ required: true }]}
               >
@@ -175,6 +201,10 @@ export default class CreatePortfolioForm extends React.Component {
               </Select>
             </Form.Item>
 
+            {/* Create the toolbar container  */}
+            <Form.Item name="blog" label="Body">
+              <div id="editor"></div>
+            </Form.Item>
             <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
               <Button type="primary" htmlType="submit">
                 Submit

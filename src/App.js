@@ -10,11 +10,13 @@ import './assets/css/ant/modal.css';
 import './assets/css/ant/header.css';
 import './assets/css/ant/button.css';
 import './assets/css/ant/input.css';
+import './assets/css/quill/textarea.css';
 import { ManageUserPage } from './pages/admin/users/manage';
 import 'antd/dist/antd.min.css';
 import SigninPage from './pages/auth/signin';
 import SignupPage from './pages/auth/signup';
 import PortfolioPage from './pages/portfolio';
+import BlogPage from './pages/blog';
 
 const About = lazy(() => import('./pages'));
 
@@ -24,6 +26,7 @@ const App = () => (
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/portfolio" element={<PortfolioPage />} />
+        <Route path="/blog" element={<BlogPage />} />
         <Route path="/signin" element={<SigninPage />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route axact path="/admin/users" element={<UsersPage />} />

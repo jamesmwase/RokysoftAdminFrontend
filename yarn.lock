@@ -9309,6 +9309,11 @@
     "define-properties" "^1.1.4"
     "es-abstract" "^1.19.5"
 
+"string@^3.3.3":
+  "integrity" "sha512-LbvprpPZT/39QKfNrlPX9vXtS7If80vqbPQ7clnHQb5oVOM5hz/cs3iQCCZjvQDwsAWl+HpLQX3gRgN6IC8t3g=="
+  "resolved" "https://registry.npmjs.org/string/-/string-3.3.3.tgz"
+  "version" "3.3.3"
+
 "stringify-object@^3.3.0":
   "integrity" "sha512-rHqiFh1elqCQ9WPLIC8I0Q/g/wj5J1eMkyoiD6eoQApWHP0FtlK7rqnhmabL5VUY9JQCcqwwvlOaSuutekgyrw=="
   "resolved" "https://registry.npmjs.org/stringify-object/-/stringify-object-3.3.0.tgz"
